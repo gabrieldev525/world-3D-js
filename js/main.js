@@ -1,63 +1,57 @@
-const CANVAS_WIDTH = 600;
-const CANVAS_HEIGHT = 600;
+let bw = 50, bh = 50;
 
-//this is the camera of the world
-var camera;
+let camera;
 
-/* 
- *  create a block of game
- *
- * @params 
- *      (int) id - the idenfier of block
- *      (string) name - the name of block
- *      (string) texture - the path + the name of the texture
- *      (float) size - 
- */
-function Block(id, name, texture, size) {
-    this.id = id;
-    this.name = name;
-    this.texture = texture;
-    this.size = size;
-
-    //position
-    this.x = 0;
-    this.y = 0;
-
-    
-    
-
-    this.add = function(x, y) {
-        this.x = x; 
-        this.y = y;
-
-        //texture(textureImage);
-        square(x, y, this.size);
-    }
-}
-
-
-// blocks creations
-var block_glass = new Block(1, 'glass', 'assets/blocks/glass.png', 50);
-
-// setup function
 function setup() {
-    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, WEBGL);
+    createCanvas(600, 400, WEBGL);
 
     camera = createCamera();
-    setCamera(camera);
+    
 }
 
+x = 0;
+y = 0;
+z = 0;
 
-
-
-// draw all elements
 function draw() {
-    background(200);
-    fill(85, 178, 224);
+    background(0);
+    fill(255);
 
-    for(i = 0; i < 10; i++) {
-        var blockSize = block_glass.size;
-        block_glass.add(-CANVAS_WIDTH / 2 + blockSize + (blockSize * i), CANVAS_HEIGHT / 2 - blockSize * 2);
+
+    rotateX(radians(45));
+
+    
+    for(x = 0; x < 10; x++) {
+        //reset the z
+        translate(0, 0, -bw * 10);
+        
+        
+        for(z = 0; z < 10; z++) {
+            box(bw, bh);
+
+            //translate the z
+            translate(0, 0, bw);
+        }
+
+        //translate the x
+        translate(bw, 0, 0);
     }
 }
 
+function keyPressed() {
+    switch(keyCode) {
+        case LEFT_ARROW:
+            camera.pan(0.1);
+            break;
+        case RIGHT_ARROW:
+            camera.pan(-0.1);
+            break;
+
+        case UP_ARROW:
+            camera.tilt(-0.1);
+            break;
+        case DOWN_ARROW:
+            camera.tilt(0.1);
+            break;
+    }
+}
